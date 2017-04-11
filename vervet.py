@@ -1,6 +1,8 @@
 import json
 import logging
 import requests
+import psutil
+import re
 
 config = """
 {
@@ -114,5 +116,33 @@ IO.mode = "server"
 print(IO.write({"a":1, "b":2}))
 
 # ===================================
-# logging system data
+# get CPU/MEM/Network and Processes data
 # ===================================
+class Vervet:
+
+  def __init__(self):
+    v = self.__pids('chrome')
+    print(v)
+
+  def __pids(self, appname):
+    regex = r'\W' + re.escape(appname) + r'\W'
+    res = []
+    for pid in psutil.pids():
+      try:
+        process = psutil.Process(pid)
+        if re.search(regex, process.name(), re.IGNORECASE):
+          res.append(process.cpu_percent())
+          #res.append(pid)
+      except psutil.NoSuchProcess:
+        pass  # do nothing
+    return res
+      
+
+# pseudo code
+# v = Vervet()
+# v.cpu_percentage()
+# v.mem_used()
+# v.mem_free()
+# v.bytes_sent()
+# v.bytes_recv()
+v = Vervet()
