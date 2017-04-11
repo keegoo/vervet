@@ -1,0 +1,21 @@
+{
+  "description": [
+    "monitor system",
+    "  1: means switch it on",
+    "  0: means switch it off",
+    "monitor application",
+    "  simply provide application names to `apps` array",
+    "  vervet will capture the processes whose name includes this `name`"
+  ],
+  "system": {
+    "cpu_percent": 1,
+    "mem_used": 1,
+    "mem_free": 1,
+    "bytes_sent": 0,
+    "bytes_recv": 0
+  },
+  "apps": [
+    "chrome"
+  ],
+  "mode": "standalone"
+}

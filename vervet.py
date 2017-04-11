@@ -3,20 +3,41 @@ import logging
 import requests
 import psutil
 import re
-
-config = """
-{
-  "system" : ["CPU", "MEM", "Network"],
-  "apps" : ["chrome", "mdworker"],
-  "mode" : "standalone"
-}
-"""
+import os
 
 # ===================================
 # deal with config
 # ===================================
 class Config:
-  def __init__(self, jsonstr):
+
+  DEFAULT_CONFIFG_FILE = 'config.json'
+  DEFAULT_CONFIFG = {
+      "description": [
+
+        "monitor system",
+        "  1: means switch it on",
+        "  0: means switch it off",
+
+        "monitor application",
+        "  simply provide application names to `apps` array",
+        "  vervet will capture the processes whose name includes this `name`"
+
+      ],
+
+      "system" : {
+        "cpu_percent": 1,
+        "mem_used": 1,
+        "mem_free": 1,
+        "bytes_sent": 0,
+        "bytes_recv": 0
+      },
+
+      "apps" : ["chrome"],
+
+      "mode" : "standalone"
+    }
+
+  def __init__(self, jsonstr=json.dumps(DEFAULT_CONFIFG)):
     if self.__valid(jsonstr):
       j = json.loads(jsonstr)
       self.json = jsonstr
@@ -30,6 +51,11 @@ class Config:
     if not newjson == self.json:
       print("reload")
       self.__init__(newjson)
+
+  @classmethod
+  def create(cls):
+    with open(cls.DEFAULT_CONFIFG_FILE, 'w') as outfile:
+      json.dump(cls.DEFAULT_CONFIFG, outfile, indent=2)
 
   def __valid(self, jsonstr):
     if (
@@ -46,31 +72,21 @@ class Config:
       j = json.loads(jsonstr)
     except ValueError:
       return False
-
     return True
 
   def __is_valid_setting(self, jsonstr):
     j = json.loads(jsonstr)
-
     for key in ['system', 'apps', 'mode']:
       if key not in j.keys():
         return False
-
     return True
 
   def __is_valid_mode(self, jsonstr):
     j = json.loads(jsonstr)
-
     if not (j['mode'] == 'standalone' or j['mode'] == 'server'):
       return False
-
     return True
 
-c = Config(config)
-print(c.apps)
-print(c.system)
-print(c.mode)
-c.update(config + ' ')
 
 # ===================================
 # logging system data
@@ -111,9 +127,6 @@ class IO:
     logging.info(data)
     return ''
 
-print(IO.mode)
-IO.mode = "server"
-print(IO.write({"a":1, "b":2}))
 
 # ===================================
 # get CPU/MEM/Network and Processes data
@@ -149,10 +162,16 @@ class Vervet:
       except psutil.NoSuchProcess:
         pass  # do nothing
     return res
-      
-v = Vervet()
-print(v.cpu_percent())
-print(v.mem_used())
-print(v.mem_free())
-print(v.bytes_sent())
-print(v.bytes_recv())
+
+
+# ===================================
+# entrance
+# ===================================
+def start():
+  if os.path.exists('config.json'):
+    print('exists')
+  else:
+    print('dump')
+    Config().create()
+
+start()
