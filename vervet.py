@@ -132,9 +132,59 @@ class IO:
 # get CPU/MEM/Network and Processes data
 # ===================================
 class Vervet:
+  # ===================================
+  # data format example:
+  # data = {
+  #   'system': {
+  #     'cpu_percent':  3.1,
+  #     'mem_used':     201928384,
+  #     'mem_free':     201923849,
+  #     'bytes_sent':   2918284,
+  #     'bytes_recv':    19384748
+  #   },
+  #   'apps': [
+  #     {
+  #       'name': 'chrome',
+  #       'pids': [
+  #         {'n': 1234, 'v': 3.2},
+  #         {'n': 1235, 'v': 3.3},
+  #         {'n': 1236, 'v': 3.8}
+  #       ]
+  #     },
+  #     {
+  #       'name': 'top',
+  #       'pids': [
+  #         {'n': 1234, 'v': 3.2}
+  #       ]
+  #     }
+  #   ]
+  # }
+  def __init__(self, config):
+    self.data = {
+      'system': self.get_system_data(config.system),
+      'app': self.get_apps_data(config.apps)
+    }
 
-  def __init__(self):
-    pass
+  def get_system_data(self, syscfg):
+    res = {}
+    if syscfg['cpu_percent'] == 1:
+      res['cpu_percent'] = self.cpu_percent()
+    if syscfg['mem_used'] == 1:
+      res['mem_used'] = self.mem_used()
+    if syscfg['mem_free'] == 1:
+      res['mem_free'] = self.mem_free()
+    if syscfg['bytes_sent'] == 1:
+      res['bytes_sent'] = self.bytes_sent()
+    if syscfg['bytes_recv'] == 1:
+      res['bytes_recv'] = self.bytes_recv()
+
+    return res
+
+  def get_apps_data(self, apps):
+    res = []
+    for app in apps:
+      res.append(self.app(app))
+    return res
 
   def cpu_percent(self):
     return psutil.cpu_percent()
@@ -151,14 +201,26 @@ class Vervet:
   def bytes_recv(self):
     return psutil.net_io_counters().bytes_recv
 
+  # ===================================
+  # apps data format example:
+  # data = {
+  #   'name': 'chrome',
+  #   'pids': [
+  #     {'n': 97, 'v': 10.1},
+  #     {'n': 98, 'v': 20.4}
+  #   ]
+  # }
   def app(self, appname):
     regex = r'\W' + re.escape(appname) + r'\W'
-    res = []
+    res = {
+      'name': appname,
+      'pids': []
+    }
     for pid in psutil.pids():
       try:
         process = psutil.Process(pid)
         if re.search(regex, process.name(), re.IGNORECASE):
-          res.append(process.cpu_percent())
+          res['pids'].append({'n': pid, 'v': process.cpu_percent()})
       except psutil.NoSuchProcess:
         pass  # do nothing
     return res
@@ -168,10 +230,16 @@ class Vervet:
 # entrance
 # ===================================
 def start():
-  if os.path.exists('config.json'):
-    print('exists')
-  else:
-    print('dump')
+  if not os.path.exists('config.json'):
     Config().create()
+
+  cfg = ""
+  with open('config.json') as infile:
+    cfg = Config(infile.read())
+  print(cfg.mode)
+
+  vvt = Vervet(cfg)
+  data = vvt.data
+  print(data)
 
 start()
