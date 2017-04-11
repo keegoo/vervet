@@ -3,12 +3,10 @@ import json
 config = """
 {
   "system" : ["CPU", "MEM", "Network"],
-  "app" : ["chrome", "mdworker"],
+  "apps" : ["chrome", "mdworker"],
   "mode" : "standalone"
 }
 """
-
-a = json.loads(config)
 
 # ===================================
 # deal with config
@@ -16,9 +14,18 @@ a = json.loads(config)
 class Config:
   def __init__(self, jsonstr):
     if self.__valid(jsonstr):
-      print("pass")
+      j = json.loads(jsonstr)
+      self.json = jsonstr
+      self.apps = j['apps']
+      self.system = j['system']
+      self.mode = j['mode']
     else:
       print("failed")
+
+  def update(self, newjson):
+    if not newjson == self.json:
+      print("reload")
+      self.__init__(newjson)
 
   def __valid(self, jsonstr):
     if (
@@ -41,7 +48,7 @@ class Config:
   def __is_valid_setting(self, jsonstr):
     j = json.loads(jsonstr)
 
-    for key in ['system', 'app', 'mode']:
+    for key in ['system', 'apps', 'mode']:
       if key not in j.keys():
         return False
 
@@ -55,12 +62,8 @@ class Config:
 
     return True
 
-# pseudo codes
 c = Config(config)
-
-# config.validate
-# config.app
-# config.system
-# config.mode
-
-# config.update(str)
+print(c.apps)
+print(c.system)
+print(c.mode)
+c.update(config + ' ')
