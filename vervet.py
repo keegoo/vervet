@@ -121,10 +121,24 @@ print(IO.write({"a":1, "b":2}))
 class Vervet:
 
   def __init__(self):
-    v = self.__pids('chrome')
-    print(v)
+    pass
 
-  def __pids(self, appname):
+  def cpu_percent(self):
+    return psutil.cpu_percent()
+
+  def mem_used(self):
+    return psutil.virtual_memory().used
+
+  def mem_free(self):
+    return psutil.virtual_memory().free
+
+  def bytes_sent(self):
+    return psutil.net_io_counters().bytes_sent
+
+  def bytes_recv(self):
+    return psutil.net_io_counters().bytes_recv
+
+  def app(self, appname):
     regex = r'\W' + re.escape(appname) + r'\W'
     res = []
     for pid in psutil.pids():
@@ -132,17 +146,13 @@ class Vervet:
         process = psutil.Process(pid)
         if re.search(regex, process.name(), re.IGNORECASE):
           res.append(process.cpu_percent())
-          #res.append(pid)
       except psutil.NoSuchProcess:
         pass  # do nothing
     return res
       
-
-# pseudo code
-# v = Vervet()
-# v.cpu_percentage()
-# v.mem_used()
-# v.mem_free()
-# v.bytes_sent()
-# v.bytes_recv()
 v = Vervet()
+print(v.cpu_percent())
+print(v.mem_used())
+print(v.mem_free())
+print(v.bytes_sent())
+print(v.bytes_recv())
