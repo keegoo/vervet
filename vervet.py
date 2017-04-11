@@ -1,4 +1,6 @@
 import json
+import logging
+import requests
 
 config = """
 {
@@ -67,3 +69,35 @@ print(c.apps)
 print(c.system)
 print(c.mode)
 c.update(config + ' ')
+
+# ===================================
+# deal with logging system data
+# ===================================
+class IO:
+  mode = "standalone"
+  logging.basicConfig(filename='data.csv',level=logging.INFO)
+
+  @classmethod
+  def write(cls):
+    if cls.mode == "standalone":
+      logging.info("writing to %s", cls.__name__)
+      cls.__to_file()
+    else:
+      logging.info("writing to %s", cls.__name__)
+      cls.__post()
+
+  @classmethod
+  def __post(cls):
+    #
+    print("post")
+
+  @classmethod
+  def __to_file(cls):
+    print("write to file")
+
+# pseudo code
+# io = IO(mode)
+# io.write(data) # standalone: return ''; server: return HTTP response
+
+print(IO.write())
+print(IO.mode)
