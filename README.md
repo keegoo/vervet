@@ -17,8 +17,11 @@ Install `requests` and `psutil` libraries with `pip`.
 ## Run vervet.py locally
 
 `Vervet.py` will run at `standalone` mode by defaut.
+
 `Config.json` will be generated at first run.
+
 If you want it to run at `server` mode, simply change `mode` to `server` in config.json.
+
 You don't have to stop application when you did any change to config.
 
     python vervet.py
