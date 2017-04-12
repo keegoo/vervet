@@ -1,6 +1,6 @@
-# README
+## README
 
-## Install
+#### Install
 
 Make sure you have `python` and `pip` installed.
 
@@ -14,7 +14,7 @@ Install `requests` and `psutil` libraries with `pip`.
 
     pip install requests psutil
 
-## Run vervet.py locally
+#### Run vervet.py locally
 
 `Vervet.py` will run at `standalone` mode by defaut.
 
@@ -26,12 +26,26 @@ You don't have to stop application when you did any change to config.
 
     python vervet.py
 
-## Application name
+#### Howto find application name
 
 Checking application name to be monitored in `Python` console:
 
-    import psutil
-    list(map(lambda x: psutil.Process(x).name(), psutil.pids()))
+```python
+import psutil
+list(map(lambda x: psutil.Process(x).name(), psutil.pids()))
+
+# outpu will be:
+#
+# ['System Idle Process', 'System', 'smss.exe', 'csrss.exe', 'wininit.exe', 'csrss
+# .exe', 'winlogon.exe', 'services.exe', 'lsass.exe', 'lsm.exe', 'svchost.exe', 'V
+# BoxService.exe', 'svchost.exe', 'svchost.exe', 'svchost.exe', 'svchost.exe', 'sv
+# chost.exe', 'audiodg.exe', 'svchost.exe', 'svchost.exe', 'spoolsv.exe', 'svchost
+# .exe', 'svchost.exe', 'svchost.exe', 'TeamViewer_Service.exe', 'sppsvc.exe', 'sv
+# chost.exe', 'wmpnetwk.exe', 'WmiPrvSE.exe', 'SearchIndexer.exe', 'taskhost.exe',
+#  'userinit.exe', 'taskeng.exe', 'dwm.exe', 'explorer.exe', 'VBoxTray.exe', 'WmiP
+# rvSE.exe', 'svchost.exe', 'cmd.exe', 'conhost.exe', 'python.exe', 'wuauclt.exe']
+
+```
 
 # Road Map
 
