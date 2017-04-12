@@ -1,3 +1,30 @@
+# README
+
+## Install
+
+Make sure you have `python` and `pip` installed.
+
+    shell$ pip --version
+    pip 9.0.1 from /usr/local/lib/python3.6/site-packages (python 3.6)
+
+    shell$ python --version
+    Python 3.6.1
+
+Install `requests` and `psutil` libraries with `pip`
+
+    pip install requests psutil
+
+## Execution
+
+    python vervet.py
+
+## Application name 
+
+Checking application name to be monitored in `Python` console:
+
+    import psutil
+    list(map(lambda x: psutil.Process(x).name(), psutil.pids()))
+
 # Road Map
 
   - `vervet.py` is going to be a system(CPU/MEM/Network/Process) monitoring tool running in local.

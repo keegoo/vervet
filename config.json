@@ -15,7 +15,7 @@
     "bytes_recv": 0
   },
   "apps": [
-    "chrome"
+    "chrome.exe"
   ],
   "mode": "standalone"
 }

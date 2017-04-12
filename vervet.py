@@ -34,7 +34,7 @@ class Config:
         "bytes_recv": 0
       },
 
-      "apps" : ["chrome"],
+      "apps" : ["Google Chrome Helper"],
 
       "mode" : "standalone"
     }
@@ -209,7 +209,6 @@ class Vervet:
   #   ]
   # }
   def app(self, appname):
-    regex = r'\W' + re.escape(appname) + r'\W'
     res = {
       'name': appname,
       'pids': []
@@ -217,7 +216,7 @@ class Vervet:
     for pid in psutil.pids():
       try:
         process = psutil.Process(pid)
-        if re.search(regex, process.name(), re.IGNORECASE):
+        if process.name() == appname:
           res['pids'].append({'n': pid, 'v': process.cpu_percent()})
       except psutil.NoSuchProcess:
         pass  # do nothing
