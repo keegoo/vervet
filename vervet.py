@@ -2,7 +2,6 @@ import json
 import logging
 import requests
 import psutil
-import re
 import os
 import time
 import datetime
