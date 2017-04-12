@@ -4,6 +4,7 @@ import requests
 import psutil
 import re
 import os
+import time
 
 # ===================================
 # deal with config
@@ -225,16 +226,29 @@ class Vervet:
 # entrance
 # ===================================
 def start():
-  if not os.path.exists('config.json'):
-    Config().create()
+  while True:
+    before = time.time()
 
-  cfg = ""
-  with open('config.json') as infile:
-    cfg = Config(infile.read())
-  print(cfg.mode)
+    # create default config if not found
+    if not os.path.exists('config.json'):
+      Config().create()
 
-  vvt = Vervet(cfg)
-  data = vvt.data
-  print(data)
+    # read config
+    cfg = ""
+    with open('config.json') as infile:
+      cfg = Config(infile.read())
+
+    # record data according to config
+    vvt = Vervet(cfg)
+    io = IO(cfg.mode)
+
+    # write data
+    io.write(vvt.data)
+
+    interval = 6 - (time.time() - before)
+    if interval > 0: 
+      print('dida...')
+      time.sleep(interval)
+
 
 start()
