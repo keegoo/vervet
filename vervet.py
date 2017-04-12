@@ -97,8 +97,7 @@ class IO:
   MODE_POST_SERVICE = "http://127.0.0.1:3000/data"
   MODE_LOCAL_FILE = "data.csv"
 
-  # logging
-  logging.basicConfig(filename=MODE_LOCAL_FILE,level=logging.INFO)
+  logging.basicConfig(format='%(message)s', filename=MODE_LOCAL_FILE,level=logging.INFO)
 
   def __init__(self, mode="standalone"):
     self.mode = mode
