@@ -5,6 +5,7 @@ import psutil
 import re
 import os
 import time
+import datetime
 
 # ===================================
 # deal with config
@@ -119,6 +120,8 @@ class IO:
     return res
 
   def __to_file(self, data):
+    iso8601 = datetime.datetime.now().isoformat().split('.')[0] + 'Z'
+    data['t'] = iso8601
     logging.info(data)
     return ''
 
