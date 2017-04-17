@@ -178,10 +178,7 @@ class Vervet:
     return res
 
   def get_apps_data(self, apps):
-    res = []
-    for app in apps:
-      res.append(self.app(app))
-    return res
+    return list(map(lambda x: self.app(x), apps))
 
   def cpu_percent(self):
     return psutil.cpu_percent()
