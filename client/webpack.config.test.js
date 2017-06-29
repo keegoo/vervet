@@ -1,12 +1,9 @@
-var webpack = require('webpack');
+var nodeExternals = require('webpack-node-externals')
 var path = require('path')
- 
+
 module.exports = {
-  entry: './src/App.jsx',
-  output: {
-    filename: 'bundle.js',
-    path: __dirname + '/build'
-  },
+  target: 'node',
+  externals: [nodeExternals()],
   module: {
     loaders: [
       {
@@ -14,7 +11,7 @@ module.exports = {
         loader: "babel-loader",
         query: {
           plugins: ['transform-class-properties'],
-          presets: ['es2015', 'react'],
+          presets: ['es2015', 'react']
         }
       }
     ]
@@ -24,4 +21,4 @@ module.exports = {
       srcDir: path.resolve(__dirname, 'src/')
     }
   }
-};
+}

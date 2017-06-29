@@ -6,9 +6,10 @@ import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider'
 class App extends React.Component {
   render(){
     return(
-      <div>
-        <h1>React APP!</h1>
-        <Jumbotron />
+      <div style={{width: '60%', margin: 'auto'}}>
+        <Jumbotron title="Jumbotron" intro="Here's introduction">
+          <button>click</button>
+        </Jumbotron>
       </div>
     )
   }

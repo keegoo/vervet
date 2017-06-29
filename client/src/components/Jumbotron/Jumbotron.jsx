@@ -1,6 +1,5 @@
 import React from 'react'
 import PropTypes from 'prop-types'
-import Paper from 'material-ui/Paper'
 import theme from '../styles/theme.js'
 
 const getStyles = () => {
@@ -11,7 +10,7 @@ const getStyles = () => {
       backgroundColor: palette.primary1Color,
       padding: spacing.desktopGutter
     },
-    heading: {
+    title: {
       fontSize: size.large
     },
     paragraph: {
@@ -22,14 +21,21 @@ const getStyles = () => {
 
 const Jumbotron = (props) => {
   const styles = getStyles()
+  const title = props.title || 'default title'
+  const intro = props.intro || 'default introduction'
 
   return(
-    <Paper zDepth={1} style={styles.paper}>
-      <h1 style={styles.heading}>Vervet monitoring</h1>
-      <p style={styles.paragraph}>This is a demo</p>
-      <button>Click</button>
-    </Paper>
+    <div style={styles.paper}>
+      <p style={styles.title}>{title}</p>
+      <p style={styles.paragraph}>{intro}</p>
+      {props.children}
+    </div>
   )
+}
+
+Jumbotron.propTypes = {
+  title: PropTypes.string.isRequired,
+  intro: PropTypes.string.isRequired
 } 
 
 export default Jumbotron

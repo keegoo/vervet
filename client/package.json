@@ -4,7 +4,8 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "./node_modules/mocha-webpack/bin/mocha-webpack --webpack-config webpack.config.test.js \"test/**/*.jsx\" || true",
+    "build": "./node_modules/.bin/webpack -d"
   },
   "keywords": [],
   "author": "",
@@ -18,10 +19,12 @@
     "chai": "^4.0.2",
     "enzyme": "^2.9.1",
     "mocha": "^3.4.2",
+    "mocha-webpack": "^0.7.0",
     "prop-types": "^15.5.10",
     "react-router": "^4.1.1",
     "react-test-renderer": "^15.6.1",
-    "webpack": "^3.0.0"
+    "webpack": "^3.0.0",
+    "webpack-node-externals": "^1.6.0"
   },
   "dependencies": {
     "material-ui": "^0.18.4",

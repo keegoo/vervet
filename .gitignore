@@ -6,3 +6,6 @@ client/build
 
 # ignore npm packages
 /client/node_modules
+
+# ignore tmp folder of mocha webpack
+client/.tmp/
