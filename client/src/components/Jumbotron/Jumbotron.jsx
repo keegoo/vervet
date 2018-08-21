@@ -36,6 +36,6 @@ const Jumbotron = (props) => {
 Jumbotron.propTypes = {
   title: PropTypes.string.isRequired,
   intro: PropTypes.string.isRequired
-} 
+}
 
 export default Jumbotron
